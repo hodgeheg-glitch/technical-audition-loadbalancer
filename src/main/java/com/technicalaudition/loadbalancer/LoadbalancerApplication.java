@@ -1,40 +1,38 @@
 package com.technicalaudition.loadbalancer;
 
-import ch.qos.logback.core.net.server.Client;
+import com.technicalaudition.loadbalancer.balancer.LoadBalancer;
 import com.technicalaudition.loadbalancer.handler.ClientSocketHandler;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.SpringApplication;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-@Slf4j
 @SpringBootApplication
 public class LoadbalancerApplication {
 
-	//TODO: replace sout lines with logger messages
-
-	private static final int SERVER_PORT = 8090;
+	private static final int SERVER_PORT = 8081;
 
 	public static void main(String[] args) throws IOException {
-		ServerSocket serverSocket = new ServerSocket(SERVER_PORT);
-		System.out.println("Load balancer running on port: " + SERVER_PORT);
-
-		while(true) {
-			//waits until a client makes a request to the load balancer. 3-way handshake occurs and connection is established.
-			Socket socket = serverSocket.accept();
-			System.out.println(("TCP connection established with client: " + socket.toString()));
-			handleSocket(socket);
-
-		}
+			establishConnection(SERVER_PORT);
 	}
 
+	public static void establishConnection(int serverPort) throws IOException {
+
+		ServerSocket serverSocket = new ServerSocket(serverPort);
+		System.out.println("Load balancer running on port: " + serverPort);
+
+		while (true) {
+			//waits until a client makes a request to the load balancer. 3-way handshake occurs and connection is established.
+			Socket client = serverSocket.accept();
+			System.out.println(("TCP connection established with client: " + client.toString()));
+			handleSocket(client);
+		}
+	}
 	private static void handleSocket(Socket socket) {
 		ClientSocketHandler clientSocketHandler = new ClientSocketHandler(socket);
 		Thread clientSocketHandlerThread = new Thread(clientSocketHandler);
 		clientSocketHandlerThread.start();
 	}
-
 }
