@@ -1,7 +1,7 @@
 # Loadbalancer Overview
 
 The 'loadbalancer' project is the main component of the technical audition, and comprises a simple Java-based layer 4 load balancer.
-The load balancer listens for the execution of the REST endpoint contained within the 'technical' projectand assigns the IP address to one of two servers via a simple 'round robin' approach.
+The load balancer listens for the execution of the REST endpoint contained within the 'technical' project and assigns the IP address to one of two servers via a simple 'round robin' approach.
 
 ## Notes
 Due to time pressure, the loadbalancer project is incomplete. An attempt was made to recognise endpoint executions via IP addresses, however as cloud services are not permitted, this proved difficult.
